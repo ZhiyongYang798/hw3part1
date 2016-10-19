@@ -11,69 +11,19 @@ class MoviesController < ApplicationController
   end
 
   def index
-    #there is sth worng when I commiting my code.So I add the code of each step here as comments
-    #Qustion 1:
-    #if params[:sort]
-    #  case params[:sort]
-    #  when 'title'
-    #    @title_hilite = 'hilite'
-    #  when 'release_date'
-    #    @release_hilite = 'hilite'
-    #  end
-    #  @movies=Movie.order(params[:sort])
-    #else
-    #  @movies=Movie.all
-    #  end
-
-    #Question 2:
-    # @all_ratings = ['NC-17', 'G', 'PG', 'PG-13', 'R']
-
-    #if params[:sort]||params[:ratings]
-    #  case params[:sort]
-    #  when 'title'
-    #    @title_hilite = 'hilite'
-    #   @movies = Movie.order(params[:sort]) 
-    #  when 'release_date'
-    #    @release_hilite = 'hilite'
-    #    @movies = Movie.order(params[:sort])
-    #  end
-    #  case params[:ratings]
-    #  when params[:ratings] ||= @all_ratings
-    #  @ratings = params[:ratings]
-    #  @ratings = @ratings.keys if @ratings.respond_to?(:keys)
-    #  @movies = Movie.where({rating: @ratings})
-    #  end
-    #else
-    #  @movies=Movie.all
-    #end
-    
-    @all_ratings = ['NC-17', 'G', 'PG', 'PG-13', 'R']
-
-    session[:ratings] = params[:ratings] if params[:ratings]
-    session[:sort]    = params[:sort]    if params[:sort]
-
-    if session[:ratings] || session[:sort]
-      case session[:sort]
+    if params[:sort]
+      case params[:sort]
       when 'title'
         @title_hilite = 'hilite'
       when 'release_date'
         @release_hilite = 'hilite'
       end
-
-      session[:ratings] ||= @all_ratings
-      @ratings = session[:ratings]
-      @ratings = @ratings.keys if @ratings.respond_to?(:keys)
-      @movies = Movie.where({rating: @ratings}).order(session[:sort])
+      @movies=Movie.order(params[:sort])
     else
-      @movies = Movie.all
-    end
-
-    if session[:ratings] != params[:ratings] || session[:sort] != params[:sort]
-      redirect_to movies_path(ratings: session[:ratings], sort: session[:sort])
-    end
-
+      @movies=Movie.all
+      end
   end
-
+    
   def new
     # default: render 'new' template
   end
